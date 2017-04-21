@@ -14,7 +14,7 @@ public class ConversionMethods {
 	
 	public static long ToTimeStamp(String inputDate) throws ParseException, java.text.ParseException {
 
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyyhhmmss");
         java.util.Date date = format.parse(inputDate);
         Timestamp tm = new Timestamp(date.getTime());
         timestamp = tm.getTime()/1000L;

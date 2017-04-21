@@ -3,6 +3,7 @@ package ru.romanenko.main;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -12,10 +13,10 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-//import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.border.TitledBorder;
-//import javax.swing.text.NumberFormatter;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
@@ -54,7 +55,6 @@ public class ApplicationFrame extends JFrame {
 	public static String inputDate;
 	
 	private JLabel inputDateLabel;
-	//private JFormattedTextField formattedTextField;
 
 	/**
 	 * Create the frame.
@@ -221,40 +221,13 @@ public class ApplicationFrame extends JFrame {
 		gbl_resultDatePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
 		resultDatePanel.setLayout(gbl_resultDatePanel);
 		
-		
-		
-	/*	NumberFormat  format = NumberFormat.getInstance();
-	    format.setParseIntegerOnly(true);
-
-	    NumberFormatter formatter = new NumberFormatter(format);
-	    formatter.setMinimum(1);
-	    formatter.setMaximum(100);
-	    formatter.setAllowsInvalid(false);
-	    formatter.setOverwriteMode(true);  
-	    
-	    formattedTextField = new JFormattedTextField(formatter);
-	    
-	    formattedTextField.setColumns(5);
-	    formattedTextField.setValue(1);
-	    
-		formattedTextField.setHorizontalAlignment(SwingConstants.TRAILING);
-		formattedTextField.setText("\u041F\u043E\u043B\u0435 \u0432\u0432\u043E\u0434\u0430");
-		formattedTextField.setColumns(3);
-		formattedTextField.setBackground(SystemColor.controlHighlight);
-		GridBagConstraints gbc_formattedTextField = new GridBagConstraints();
-		gbc_formattedTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_formattedTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_formattedTextField.gridx = 3;
-		gbc_formattedTextField.gridy = 1;
-		resultDatePanel.add(formattedTextField, gbc_formattedTextField); */
-		
 		unixtimestampLabel = new JLabel("UnixTimeStamp");
-		unixtimestampLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		unixtimestampLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_unixtimestampLabel = new GridBagConstraints();
-		gbc_unixtimestampLabel.gridwidth = 4;
+		gbc_unixtimestampLabel.gridwidth = 6;
 		gbc_unixtimestampLabel.anchor = GridBagConstraints.WEST;
 		gbc_unixtimestampLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_unixtimestampLabel.gridx = 3;
+		gbc_unixtimestampLabel.gridx = 1;
 		gbc_unixtimestampLabel.gridy = 2;
 		resultDatePanel.add(unixtimestampLabel, gbc_unixtimestampLabel);
 		
@@ -270,12 +243,12 @@ public class ApplicationFrame extends JFrame {
 		unixdateTf.setEditable(false);
 		
 		unixtimestampHexLabel = new JLabel("UnixTimeStamp \u0432 HEX");
-		unixtimestampHexLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		unixtimestampHexLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_unixtimestampHexLabel = new GridBagConstraints();
-		gbc_unixtimestampHexLabel.gridwidth = 4;
+		gbc_unixtimestampHexLabel.gridwidth = 6;
 		gbc_unixtimestampHexLabel.anchor = GridBagConstraints.WEST;
 		gbc_unixtimestampHexLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_unixtimestampHexLabel.gridx = 3;
+		gbc_unixtimestampHexLabel.gridx = 1;
 		gbc_unixtimestampHexLabel.gridy = 3;
 		resultDatePanel.add(unixtimestampHexLabel, gbc_unixtimestampHexLabel);
 		
@@ -293,10 +266,10 @@ public class ApplicationFrame extends JFrame {
 		countDaysLabel = new JLabel("\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0434\u043D\u0435\u0439 \u0441 01.01.1970");
 		countDaysLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_countDaysLabel = new GridBagConstraints();
-		gbc_countDaysLabel.gridwidth = 4;
+		gbc_countDaysLabel.gridwidth = 6;
 		gbc_countDaysLabel.anchor = GridBagConstraints.WEST;
 		gbc_countDaysLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_countDaysLabel.gridx = 3;
+		gbc_countDaysLabel.gridx = 1;
 		gbc_countDaysLabel.gridy = 4;
 		resultDatePanel.add(countDaysLabel, gbc_countDaysLabel);
 		
@@ -314,10 +287,10 @@ public class ApplicationFrame extends JFrame {
 		countDaysHexLabel = new JLabel("\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0434\u043D\u0435\u0439 \u0441 01.01.1970 \u0432 HEX");
 		countDaysHexLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_countDaysHexLabel = new GridBagConstraints();
-		gbc_countDaysHexLabel.gridwidth = 4;
+		gbc_countDaysHexLabel.gridwidth = 7;
 		gbc_countDaysHexLabel.anchor = GridBagConstraints.WEST;
 		gbc_countDaysHexLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_countDaysHexLabel.gridx = 3;
+		gbc_countDaysHexLabel.gridx = 1;
 		gbc_countDaysHexLabel.gridy = 5;
 		resultDatePanel.add(countDaysHexLabel, gbc_countDaysHexLabel);
 		
@@ -351,34 +324,89 @@ public class ApplicationFrame extends JFrame {
 		convertButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				inputDate = GetInputDate();
+				
+				inputDate = GetInputDate(createResultTextFieldsCollection());
 				try {
-					ConvertHumanDate(inputDate);
+					ValidateInputDayText(GetInputText(createResultTextFieldsCollection()));
 				} catch (ParseException | java.text.ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				}
 			});
-		
-		
 	}
 	
-	public static String GetInputDate() {
+	public static ArrayList<JTextField> createResultTextFieldsCollection() {
+		ArrayList<JTextField> resultTFCol = new ArrayList<JTextField>();
+		resultTFCol.add(dayTf);
+		resultTFCol.add(monthTf);
+		resultTFCol.add(yearTf);
+		resultTFCol.add(hoursTf);
+		resultTFCol.add(minutesTf);
+		resultTFCol.add(secondsTf);
+		return resultTFCol;
+	}
+	
+	public static ArrayList<String> GetInputText(ArrayList<JTextField> resultTFCol) {
+		
+		ArrayList<String> textResultTFCol = new ArrayList<String>();
+		for (JTextField tf : resultTFCol) {
+				textResultTFCol.add(tf.getText());
+		}
+		return textResultTFCol;
+	}
+	
+	public static String GetInputDate(Collection<JTextField> resultTFCol) {
 		
 		String inputDate = "";
-		String inputDay = ApplicationFrame.dayTf.getText();
-		String inputMonth = ApplicationFrame.monthTf.getText();
-		String inputYear = ApplicationFrame.yearTf.getText();
-		String inputHours = ApplicationFrame.hoursTf.getText();
-		String inputMinutes = ApplicationFrame.minutesTf.getText();
-		String inputSeconds = ApplicationFrame.secondsTf.getText();
-		inputDate = inputDay.concat("-").concat(inputMonth.concat("-").concat(inputYear).concat("-").concat(inputHours).concat("-").concat(inputMinutes).concat("-").concat(inputSeconds));
+		for (JTextField tf : resultTFCol) {
+			inputDate = inputDate.concat(tf.getText());
+		} 
 		return inputDate;
-		
 	}
 	
-	public static void ConvertHumanDate(String inputDate) throws ParseException, java.text.ParseException {
+	public void ValidateInputDayText(ArrayList<String> textResultTFCol) throws ParseException, java.text.ParseException {
+
+		boolean dayValidation = InputTextValidator.checkDayTfWithRegExp(textResultTFCol.get(0));
+		if (dayValidation == true) {
+			boolean monthValidation = InputTextValidator.checkMonthTfWithRegExp(textResultTFCol.get(1));
+			if (monthValidation == true) {
+				boolean yearValidation = InputTextValidator.checkYearTfWithRegExp(textResultTFCol.get(2));
+				if (yearValidation == true){
+					boolean hoursValidation = InputTextValidator.checkHoursTfWithRegExp(textResultTFCol.get(3));
+					if (hoursValidation == true) {
+						boolean minutesValidation = InputTextValidator.checkMinutesTfWithRegExp(textResultTFCol.get(4));
+						if (minutesValidation == true) {
+							boolean secondsValidation = InputTextValidator.checkSecondsTfWithRegExp(textResultTFCol.get(5));
+							if (secondsValidation == true) {
+								ConvertUsualDate(inputDate);
+								}
+							else {
+								JOptionPane.showMessageDialog(contentPane, "Некорректно введены секунды", "Ошибка", JOptionPane.WARNING_MESSAGE);
+								}
+							}
+						else {
+							JOptionPane.showMessageDialog(contentPane, "Некорректно введены минуты", "Ошибка", JOptionPane.WARNING_MESSAGE);
+							}
+						}
+					else {
+						JOptionPane.showMessageDialog(contentPane, "Некорректно введен час", "Ошибка", JOptionPane.WARNING_MESSAGE);
+						}
+					}
+				else {
+					JOptionPane.showMessageDialog(contentPane, "Некорректно введен год", "Ошибка", JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			else {
+				JOptionPane.showMessageDialog(contentPane, "Некорректно введен месяц", "Ошибка", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		else {
+			JOptionPane.showMessageDialog(contentPane, "Некорректно введен день", "Ошибка", JOptionPane.WARNING_MESSAGE);
+			}
+		}
+	
+	public static void ConvertUsualDate(String inputDate) throws ParseException, java.text.ParseException {
 		
 		ApplicationFrame.unixdateTf.setText(Long.toString(ConversionMethods.ToTimeStamp(inputDate)));
 		ApplicationFrame.unixTsHexTf.setText(ConversionMethods.TimeStampToHex(ConversionMethods.ToTimeStamp(inputDate)));
