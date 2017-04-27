@@ -3,7 +3,6 @@ package ru.romanenko.main;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -14,7 +13,6 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.swing.border.TitledBorder;
 
@@ -27,7 +25,7 @@ import java.awt.SystemColor;
 public class ApplicationFrame extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	static JPanel contentPane;
 	
 	static JTextField dayTf;
 	static JTextField monthTf;
@@ -75,8 +73,8 @@ public class ApplicationFrame extends JFrame {
 		contentPane.setLayout(gbl_contentPane);
 		
 		/* 
-		 * Панель для ввода исходной даты. 
-		 * Содержит лейблы и текстовые поля для ввода ДД-ММ-ГГГГ ЧЧ-ММ-СС
+		 * Create JPanel for input date. The panel contains labels and textfields.
+		 * Input format is DDMMYYYYHHMMSS
 		 */
 		
 		JPanel inputDatePanel = new JPanel();
@@ -95,6 +93,7 @@ public class ApplicationFrame extends JFrame {
 		gbl_inputDatePanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		inputDatePanel.setLayout(gbl_inputDatePanel);
 		
+		//Labels to name input textfields
 		dayLabel = new JLabel("ДД");
 		GridBagConstraints gbc_dayLabel = new GridBagConstraints();
 		gbc_dayLabel.insets = new Insets(0, 0, 5, 5);
@@ -145,6 +144,7 @@ public class ApplicationFrame extends JFrame {
 		gbc_inputDateLabel.gridy = 1;
 		inputDatePanel.add(inputDateLabel, gbc_inputDateLabel);
 		
+		//Creating JTextFields
 		dayTf = new JTextField();
 		GridBagConstraints gbc_dayTf = new GridBagConstraints();
 		gbc_dayTf.fill = GridBagConstraints.HORIZONTAL;
@@ -200,8 +200,9 @@ public class ApplicationFrame extends JFrame {
 		secondsTf.setColumns(10);
 		
 		/*
-		 * Панель для вывода полученной даты: unixtimestamp, unixtimestamp в HEX, количество дней
-		 * с 1970 года, количество дней с 1970 года в HEX
+		 * Creating JPanel for output information 
+		 * (result dates: unixtimestamp, unixtimestamp in HEX,
+		 * count of days since 01/01/1970, count of days since 01/01/1970 in HEX)
 		 */
 		
 		JPanel resultDatePanel = new JPanel();
@@ -221,6 +222,7 @@ public class ApplicationFrame extends JFrame {
 		gbl_resultDatePanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
 		resultDatePanel.setLayout(gbl_resultDatePanel);
 		
+		//Creating labels to name the output textfields and textfields
 		unixtimestampLabel = new JLabel("UnixTimeStamp");
 		unixtimestampLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_unixtimestampLabel = new GridBagConstraints();
@@ -306,7 +308,7 @@ public class ApplicationFrame extends JFrame {
 		countDaysHexTf.setEditable(false);
 		
 		/*
-		 * Панель для кнопки "Перевести" 
+		 * Creating JPanel for button "OK"
 		 */
 		
 		JPanel buttonPanel = new JPanel();
@@ -321,13 +323,14 @@ public class ApplicationFrame extends JFrame {
 		JButton convertButton = new JButton("Перевести");
 		buttonPanel.add(convertButton);
 		
+		//Adding MouseListener on button "OK"
 		convertButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
-				inputDate = GetInputDate(createResultTextFieldsCollection());
+				inputDate = GetInputDate(createInputTextFieldsList());
 				try {
-					ValidateInputDayText(GetInputText(createResultTextFieldsCollection()));
+					InputTextValidator.ValidateInputDayText(GetInputText(createInputTextFieldsList()));
 				} catch (ParseException | java.text.ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -336,83 +339,44 @@ public class ApplicationFrame extends JFrame {
 			});
 	}
 	
-	public static ArrayList<JTextField> createResultTextFieldsCollection() {
-		ArrayList<JTextField> resultTFCol = new ArrayList<JTextField>();
-		resultTFCol.add(dayTf);
-		resultTFCol.add(monthTf);
-		resultTFCol.add(yearTf);
-		resultTFCol.add(hoursTf);
-		resultTFCol.add(minutesTf);
-		resultTFCol.add(secondsTf);
-		return resultTFCol;
+	//Creating array, containing result text fields
+	public static ArrayList<JTextField> createInputTextFieldsList() {
+		ArrayList<JTextField> inputTFlist = new ArrayList<JTextField>();
+		inputTFlist.add(dayTf);
+		inputTFlist.add(monthTf);
+		inputTFlist.add(yearTf);
+		inputTFlist.add(hoursTf);
+		inputTFlist.add(minutesTf);
+		inputTFlist.add(secondsTf);
+		return inputTFlist;
 	}
 	
-	public static ArrayList<String> GetInputText(ArrayList<JTextField> resultTFCol) {
+	//Getting input date from textfields
+	public static ArrayList<String> GetInputText(ArrayList<JTextField> inputTFlist) {
 		
-		ArrayList<String> textResultTFCol = new ArrayList<String>();
-		for (JTextField tf : resultTFCol) {
-				textResultTFCol.add(tf.getText());
+		ArrayList<String> textResultTFList = new ArrayList<String>();
+		for (JTextField tf : inputTFlist) {
+			textResultTFList.add(tf.getText());
 		}
-		return textResultTFCol;
+		return textResultTFList;
 	}
 	
-	public static String GetInputDate(Collection<JTextField> resultTFCol) {
+	//Getting input date string
+	public static String GetInputDate(ArrayList<JTextField> inputTFlist) {
 		
 		String inputDate = "";
-		for (JTextField tf : resultTFCol) {
+		for (JTextField tf : inputTFlist) {
 			inputDate = inputDate.concat(tf.getText());
 		} 
 		return inputDate;
 	}
-	
-	public void ValidateInputDayText(ArrayList<String> textResultTFCol) throws ParseException, java.text.ParseException {
-
-		boolean dayValidation = InputTextValidator.checkDayTfWithRegExp(textResultTFCol.get(0));
-		if (dayValidation == true) {
-			boolean monthValidation = InputTextValidator.checkMonthTfWithRegExp(textResultTFCol.get(1));
-			if (monthValidation == true) {
-				boolean yearValidation = InputTextValidator.checkYearTfWithRegExp(textResultTFCol.get(2));
-				if (yearValidation == true){
-					boolean hoursValidation = InputTextValidator.checkHoursTfWithRegExp(textResultTFCol.get(3));
-					if (hoursValidation == true) {
-						boolean minutesValidation = InputTextValidator.checkMinutesTfWithRegExp(textResultTFCol.get(4));
-						if (minutesValidation == true) {
-							boolean secondsValidation = InputTextValidator.checkSecondsTfWithRegExp(textResultTFCol.get(5));
-							if (secondsValidation == true) {
-								ConvertUsualDate(inputDate);
-								}
-							else {
-								JOptionPane.showMessageDialog(contentPane, "Некорректно введены секунды", "Ошибка", JOptionPane.WARNING_MESSAGE);
-								}
-							}
-						else {
-							JOptionPane.showMessageDialog(contentPane, "Некорректно введены минуты", "Ошибка", JOptionPane.WARNING_MESSAGE);
-							}
-						}
-					else {
-						JOptionPane.showMessageDialog(contentPane, "Некорректно введен час", "Ошибка", JOptionPane.WARNING_MESSAGE);
-						}
-					}
-				else {
-					JOptionPane.showMessageDialog(contentPane, "Некорректно введен год", "Ошибка", JOptionPane.WARNING_MESSAGE);
-					}
-				}
-			else {
-				JOptionPane.showMessageDialog(contentPane, "Некорректно введен месяц", "Ошибка", JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		else {
-			JOptionPane.showMessageDialog(contentPane, "Некорректно введен день", "Ошибка", JOptionPane.WARNING_MESSAGE);
-			}
-		}
-	
+		
+	//Converting usual date into several formats
 	public static void ConvertUsualDate(String inputDate) throws ParseException, java.text.ParseException {
 		
 		ApplicationFrame.unixdateTf.setText(Long.toString(ConversionMethods.ToTimeStamp(inputDate)));
 		ApplicationFrame.unixTsHexTf.setText(ConversionMethods.TimeStampToHex(ConversionMethods.ToTimeStamp(inputDate)));
 		ApplicationFrame.countDaysTf.setText(Integer.toString(ConversionMethods.TimeStampToUnixDays(ConversionMethods.ToTimeStamp(inputDate))));
 		ApplicationFrame.countDaysHexTf.setText(ConversionMethods.UnixDaysToHex(ConversionMethods.TimeStampToUnixDays(ConversionMethods.ToTimeStamp(inputDate))));
-	
 	}
-	
 }
